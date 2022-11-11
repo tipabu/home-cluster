@@ -1,0 +1,43 @@
+- name: Reload object-server
+  systemd:
+    name: swift-object-server.service
+    state: reloaded
+  async: 60
+  poll: 0
+  register: object_server_restart
+
+- name: Restart object-auditor
+  systemd:
+    name: swift-object-auditor.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: object_auditor_restart
+
+- name: Restart object-replicator
+  systemd:
+    name: swift-object-replicator.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: object_replicator_restart
+
+- name: Restart object-updater
+  systemd:
+    name: swift-object-updater.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: object_updater_restart
+
+- name: Wait for restarts to complete
+  async_status:
+    jid: "{{ item }}"
+  register: object_restarts
+  until: object_restarts.finished
+  retries: 12
+  with_items:
+    - "{{ object_server_restart.ansible_job_id }}"
+    - "{{ object_auditor_restart.ansible_job_id }}"
+    - "{{ object_replicator_restart.ansible_job_id }}"
+    - "{{ object_updater_restart.ansible_job_id }}"

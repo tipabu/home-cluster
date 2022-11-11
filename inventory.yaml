@@ -1,0 +1,31 @@
+---
+all:
+  children:
+    worker:
+      hosts:
+        192.168.50.18:
+
+    bastion:
+      hosts:
+        192.168.50.31:
+          ansible_user: tburke
+
+    swift:
+      children:
+        proxy:
+        meta:
+        object:
+    proxy:
+      children:
+        meta:
+        object:
+    object:
+      hosts:
+        192.168.50.17:
+        192.168.50.19:
+        192.168.50.21:
+    meta:
+      hosts:
+        192.168.50.20:
+  vars:
+    ansible_python_interpreter: auto

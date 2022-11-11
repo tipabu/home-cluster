@@ -1,0 +1,52 @@
+- name: Reload container-server
+  systemd:
+    name: swift-container-server.service
+    state: reloaded
+  async: 60
+  poll: 0
+  register: container_server_restart
+
+- name: Restart container-auditor
+  systemd:
+    name: swift-container-auditor.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: container_auditor_restart
+
+- name: Restart container-replicator
+  systemd:
+    name: swift-container-replicator.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: container_replicator_restart
+
+- name: Restart container-sharder
+  systemd:
+    name: swift-container-sharder.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: container_sharder_restart
+
+- name: Restart container-updater
+  systemd:
+    name: swift-container-updater.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: container_updater_restart
+
+- name: Wait for restarts to complete
+  async_status:
+    jid: "{{ item }}"
+  register: container_restarts
+  until: container_restarts.finished
+  retries: 12
+  with_items:
+    - "{{ container_server_restart.ansible_job_id }}"
+    - "{{ container_auditor_restart.ansible_job_id }}"
+    - "{{ container_replicator_restart.ansible_job_id }}"
+    - "{{ container_sharder_restart.ansible_job_id }}"
+    - "{{ container_updater_restart.ansible_job_id }}"

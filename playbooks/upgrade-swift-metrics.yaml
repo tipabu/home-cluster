@@ -1,0 +1,17 @@
+- name: Upgrade swift-metrics
+  hosts: swift
+  gather_facts: no
+  strategy: free
+  tasks:
+  - pip:
+      name: swift-metrics
+      state: latest
+    register: pip_result
+
+- name: Restart swift-metrics
+  hosts: swift
+  gather_facts: no
+  strategy: free
+  roles:
+    - role: restart-swift-metrics
+      when: pip_result.changed

@@ -1,0 +1,25 @@
+- name: Upgrade Swift
+  hosts: swift
+  gather_facts: no
+  tasks:
+  - pip:
+      name: "swift{{ swift_version | default('') }}"
+      state: latest
+    register: pip_result
+
+- import_playbook: restart-swift.yaml
+  when: pip_result.changed
+
+#- name: Restart Swift
+#  hosts: swift
+#  gather_facts: no
+#  strategy: free
+#  roles:
+#    - role: restart-swift-object
+#      when: pip_result.changed and 'object' in group_names
+#    - role: restart-swift-container
+#      when: pip_result.changed and 'container' in group_names
+#    - role: restart-swift-account
+#      when: pip_result.changed and 'account' in group_names
+#    - role: restart-swift-proxy
+#      when: pip_result.changed and 'proxy' in group_names

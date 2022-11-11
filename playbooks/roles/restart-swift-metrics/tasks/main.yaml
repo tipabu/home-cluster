@@ -1,0 +1,4 @@
+- name: Restart siwft-metrics
+  systemd:
+    name: swift-metrics.service
+    state: restarted

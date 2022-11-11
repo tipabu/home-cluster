@@ -1,0 +1,4 @@
+- name: Restart proxy-server
+  systemd:
+    name: swift-proxy-server.service
+    state: reloaded

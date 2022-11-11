@@ -1,0 +1,34 @@
+- name: Reload account-server
+  systemd:
+    name: swift-account-server.service
+    state: reloaded
+  async: 60
+  poll: 0
+  register: account_server_restart
+
+- name: Restart account-auditor
+  systemd:
+    name: swift-account-auditor.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: account_auditor_restart
+
+- name: Restart account-replicator
+  systemd:
+    name: swift-account-replicator.service
+    state: restarted
+  async: 60
+  poll: 0
+  register: account_replicator_restart
+
+- name: Wait for restarts to complete
+  async_status:
+    jid: "{{ item }}"
+  register: account_restarts
+  until: account_restarts.finished
+  retries: 12
+  with_items:
+    - "{{ account_server_restart.ansible_job_id }}"
+    - "{{ account_auditor_restart.ansible_job_id }}"
+    - "{{ account_replicator_restart.ansible_job_id }}"

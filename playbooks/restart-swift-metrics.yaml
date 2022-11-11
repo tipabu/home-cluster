@@ -1,0 +1,6 @@
+- name: Restart swift-metrics
+  hosts: swift
+  gather_facts: no
+  strategy: free
+  roles:
+    - restart-swift-metrics

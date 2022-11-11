@@ -1,0 +1,26 @@
+- name: Restart Swift (object)
+  hosts: object
+  gather_facts: no
+  strategy: free
+  roles:
+    - restart-swift-object
+
+- name: Restart Swift (container)
+  hosts: meta
+  gather_facts: no
+  strategy: free
+  roles:
+    - restart-swift-container
+
+- name: Restart Swift (account)
+  hosts: meta
+  gather_facts: no
+  strategy: free
+  roles:
+    - restart-swift-account
+
+- name: Restart Swift (proxy)
+  hosts: proxy
+  gather_facts: no
+  roles:
+    - restart-swift-proxy
