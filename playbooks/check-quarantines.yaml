@@ -1,0 +1,19 @@
+- name: Check quarantines
+  hosts: swift
+  gather_facts: no
+  tasks:
+    - shell:
+        cmd: "du -sh /srv/node/*/quarantined/* ||:"
+      register: quarantines
+    - shell:
+        cmd: "du -sh /srv/node/*/lost+found ||:"
+      register: lost_and_found
+    - debug:
+        var: quarantines.stdout_lines
+      when: quarantines.stdout
+    - debug:
+        var: lost_and_found.stdout_lines
+      when: lost_and_found.stdout
+    - fail:
+        msg: Found quarantines and/or lost+found
+      when: quarantines.stdout or lost_and_found.stdout
