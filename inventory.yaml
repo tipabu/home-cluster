@@ -4,6 +4,7 @@ all:
     worker:
       hosts:
         192.168.50.18:
+          ansible_user: root
 
     bastion:
       hosts:
@@ -22,10 +23,14 @@ all:
     object:
       hosts:
         192.168.50.17:
+          ansible_user: root
         192.168.50.19:
+          ansible_user: root
         192.168.50.21:
+          ansible_user: root
     meta:
       hosts:
         192.168.50.20:
+          ansible_user: root
   vars:
     ansible_python_interpreter: auto
