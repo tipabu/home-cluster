@@ -1,0 +1,11 @@
+- name: Ensure .ssh directory
+  file:
+    path: "~/.ssh"
+    state: directory
+    mode: 0700
+
+- name: Sync authorized_keys
+  copy:
+    src: authorized_keys
+    dest: "~/.ssh/authorized_keys"
+    mode: 0600
