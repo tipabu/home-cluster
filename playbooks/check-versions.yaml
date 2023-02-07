@@ -1,0 +1,21 @@
+- name: Check versions
+  hosts: swift
+  gather_facts: no
+  tasks:
+    - command: "lsb_release -ds"
+      register: linux_version
+    - name: "Linux version"
+      debug:
+        msg: "{{ linux_version.stdout }}"
+
+    - command: "python3 --version"
+      register: python_version
+    - name: "Python version"
+      debug:
+        msg: "{{ python_version.stdout }}"
+
+    - command: "pip freeze"
+      register: pip_versions
+    - name: "Python packages"
+      debug:
+        var: pip_versions.stdout_lines
