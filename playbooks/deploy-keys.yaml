@@ -1,0 +1,8 @@
+- name: Check keys
+  hosts: odroids
+  gather_facts: no
+  tasks:
+    - command: "cat /root/.ssh/authorized_keys"
+      register: keys
+    - debug:
+        var: keys.stdout_lines
