@@ -1,0 +1,16 @@
+[Unit]
+Description=Swift container sharder
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=notify
+User=swift
+Group=swift
+Restart=always
+ExecStart=swift-container-sharder /etc/swift/container-server.conf.d
+ExecStop=bash -c "kill -TERM $MAINPID && tail -f /dev/null --pid $MAINPID"
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=Swift container server
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=notify
+User=swift
+Group=swift
+Restart=always
+ExecStart=swift-container-server /etc/swift/container-server.conf.d
+ExecStop=bash -c "kill -HUP $MAINPID && tail -f /dev/null --pid $MAINPID"
+ExecReload=swift-reload $MAINPID
+
+[Install]
+WantedBy=multi-user.target

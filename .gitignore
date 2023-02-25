@@ -1,0 +1,3 @@
+configs/swift-node/etc/swift/swift.conf
+configs/swift-node/etc/swift/proxy-server.conf.d/03_keymaster.conf
+configs/swift-node/etc/swift/proxy-server.conf.d/04_tempauth.conf
