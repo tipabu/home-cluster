@@ -14,6 +14,12 @@
       debug:
         msg: "{{ python_version.stdout }}"
 
+    - shell: "pip freeze | sort | md5sum"
+      register: pip_versions_hash
+    - name: "Hash of Python packages"
+      debug:
+        msg: "{{ pip_versions_hash.stdout }}"
+
     - command: "pip freeze"
       register: pip_versions
     - name: "Python packages"
