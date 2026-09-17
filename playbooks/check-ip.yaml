@@ -1,0 +1,24 @@
+- name: Check IP
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Get Current IP
+      uri:
+        url: https://httpbin.org/ip
+      register: my_ip
+    - name: Resolve Domain
+      set_fact:
+        resolved_ip: "{{ lookup('community.general.dig', domain|trim + '.') }}"
+    - debug:
+        var: my_ip.json.origin
+    - debug:
+        var: resolved_ip
+    - name: Update DuckDNS
+      uri:
+        url: https://www.duckdns.org/update
+        body_format: json
+        body:
+          domains: "{{ domain|trim }}"
+          token: "{{ api_key }}"
+          ip: "{{ my_ip.json.origin }}"
+      when: my_ip.json.origin != resolved_ip
