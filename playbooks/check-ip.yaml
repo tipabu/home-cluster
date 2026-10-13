@@ -16,6 +16,7 @@
     - name: Update DuckDNS
       uri:
         url: https://www.duckdns.org/update
+        method: POST
         body_format: json
         body:
           domains: "{{ domain|trim }}"
